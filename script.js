@@ -65,18 +65,18 @@ document.querySelectorAll('.toggle').forEach(function (t) {
   });
 });
 
-// Cycling greeting on the home page
+// Greeting ticker: words scroll up one at a time, "I'm" never moves
 (function () {
-  var el = document.querySelector('.greet .hi');
-  if (!el) return;
-  var words = el.dataset.words.split('|'), i = 0;
+  var list = document.querySelector('.ticker-list');
+  if (!list) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var n = list.children.length - 1, i = 0;
   setInterval(function () {
-    el.classList.add('out');
-    setTimeout(function () {
-      i = (i + 1) % words.length;
-      el.textContent = words[i];
-      el.classList.remove('out');
-    }, 250);
-  }, 1800);
+    i++;
+    list.classList.remove('no-anim');
+    list.style.transform = 'translateY(' + (-i * 1.15) + 'em)';
+    if (i === n) {
+      setTimeout(function () { list.classList.add('no-anim'); list.style.transform = 'translateY(0)'; i = 0; }, 650);
+    }
+  }, 2000);
 })();
