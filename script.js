@@ -65,18 +65,26 @@ document.querySelectorAll('.toggle').forEach(function (t) {
   });
 });
 
-// Greeting ticker: words scroll up one at a time, "I'm" never moves
+// Greeting wheel: words roll down like a clock picker, "I'm" never moves
 (function () {
-  var list = document.querySelector('.ticker-list');
-  if (!list) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var n = list.children.length - 1, i = 0;
-  setInterval(function () {
-    i++;
-    list.classList.remove('no-anim');
-    list.style.transform = 'translateY(' + (-i * 1.15) + 'em)';
-    if (i === n) {
-      setTimeout(function () { list.classList.add('no-anim'); list.style.transform = 'translateY(0)'; i = 0; }, 650);
-    }
-  }, 2000);
+  var wheel = document.querySelector('.wheel');
+  if (!wheel) return;
+  var words = wheel.dataset.words.split('|'), N = words.length, k = 0;
+  var els = words.map(function (w) { var s = document.createElement('span'); s.className = 'w'; s.textContent = w; wheel.appendChild(s); return s; });
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var prev = [];
+  function place(first) {
+    els.forEach(function (el, i) {
+      var rel = ((i - k) % N + N) % N; if (rel > N / 2) rel -= N;
+      el.classList.toggle('jump', first || (prev[i] !== undefined && Math.abs(rel - prev[i]) > 1));
+      el.style.transform = 'translateY(' + (rel * 0.98) + 'em) rotateX(' + (-rel * 52) + 'deg) scale(' + (1 - Math.abs(rel) * 0.08) + ')';
+      el.style.opacity = rel === 0 ? 1 : (Math.abs(rel) === 1 ? 0.28 : 0);
+      el.style.filter = rel === 0 ? 'none' : 'blur(1px)';
+      el.classList.toggle('on', rel === 0);
+      prev[i] = rel;
+    });
+  }
+  place(true);
+  if (still) return;
+  setInterval(function () { k = (k + 1) % N; place(false); }, 2400);
 })();
