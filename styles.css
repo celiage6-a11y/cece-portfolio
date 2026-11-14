@@ -35,7 +35,7 @@ section{position:relative}
 .wheel .w.jump{transition:none}
 .wheel .w.on{background:linear-gradient(110deg,var(--ink) 0 38%,#7d86ff 46%,#ffb8d4 50%,#7d86ff 54%,var(--ink) 62% 100%);background-size:260% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 1.6s .55s ease-out both}
 @keyframes shine{from{background-position:100% 0}to{background-position:-60% 0}}
-.name .im{color:var(--muted)}
+.name .im{color:var(--ink)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .name{font-family:var(--display);font-weight:800;font-size:clamp(68px,15vw,216px);line-height:.86;letter-spacing:-.05em;margin:clamp(6px,1vw,12px) 0 clamp(28px,4vw,48px)}
 .name .b{color:var(--blue)} .name .p{color:var(--pink)}
